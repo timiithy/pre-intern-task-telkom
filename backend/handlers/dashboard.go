@@ -54,17 +54,17 @@ func GetTopBooks(c echo.Context) error {
 	return c.JSON(http.StatusOK, topBooks)
 }
 
-func GetAverageBorrowingDuration(c echo.Context) error {
-	var avgDuration float64
+func GetTotalBorrowingDuration(c echo.Context) error {
+	var totalDuration int64
 
 	err := config.DB.Model(&models.Peminjaman{}).
-		Select("AVG(durasi)").
+		Select("SUM(durasi)").
 		Where("returned_at IS NOT NULL").
-		Scan(&avgDuration).Error
+		Scan(&totalDuration).Error
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 
-	return c.JSON(http.StatusOK, map[string]float64{"average_duration": avgDuration})
+	return c.JSON(http.StatusOK, map[string]int64{"total_duration": totalDuration})
 }

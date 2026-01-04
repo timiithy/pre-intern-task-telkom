@@ -26,7 +26,7 @@ func main() {
 	e.GET("/api/dashboard/stats", handlers.GetDashboardStats)
 	e.GET("/api/dashboard/top-users", handlers.GetTopUsers)
 	e.GET("/api/dashboard/top-books", handlers.GetTopBooks)
-	e.GET("/api/dashboard/avg-duration", handlers.GetAverageBorrowingDuration)
+	e.GET("/api/dashboard/total-duration", handlers.GetTotalBorrowingDuration)
 
 	// Buku routes
 	e.GET("/api/buku", handlers.GetAllBuku)
