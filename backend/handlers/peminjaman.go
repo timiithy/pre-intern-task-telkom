@@ -1,0 +1,51 @@
+package handlers
+
+import (
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+	config "github.com/timiithy/pre-intern-task-telkom/database"
+	models "github.com/timiithy/pre-intern-task-telkom/model"
+)
+
+func GetAllPeminjaman(c echo.Context) error {
+	var peminjaman []models.Peminjaman
+	if err := config.DB.Preload("Pengguna").Preload("Buku").Find(&peminjaman).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	return c.JSON(http.StatusOK, peminjaman)
+}
+
+func GetPeminjamanByID(c echo.Context) error {
+	id := c.Param("id")
+	var peminjaman models.Peminjaman
+	if err := config.DB.Preload("Pengguna").Preload("Buku").First(&peminjaman, "id_peminjaman = ?", id).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Borrowing record not found"})
+	}
+	return c.JSON(http.StatusOK, peminjaman)
+}
+
+func CreatePeminjaman(c echo.Context) error {
+	peminjaman := new(models.Peminjaman)
+	if err := c.Bind(peminjaman); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+
+	if err := config.DB.Create(&peminjaman).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	// Load relations
+	config.DB.Preload("Pengguna").Preload("Buku").First(&peminjaman, "id_peminjaman = ?", peminjaman.IDPeminjaman)
+
+	return c.JSON(http.StatusCreated, peminjaman)
+}
+
+func DeletePeminjaman(c echo.Context) error {
+	id := c.Param("id")
+
+	if err := config.DB.Delete(&models.Peminjaman{}, "id_peminjaman = ?", id).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	return c.JSON(http.StatusOK, map[string]string{"message": "Borrowing record deleted successfully"})
+}
