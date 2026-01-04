@@ -1,0 +1,90 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+.dashboard-cards {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+.card-outline {
+  border: 1px solid #e5e7eb;
+  border-radius: 28px;
+  box-shadow: none;
+  padding: 8px;
+  background: #ffffff;
+}
+
+.card-outline:hover {
+  border-color: #93b3fd64;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.card-outline .card-content {
+  padding: 24px;
+}
+
+.card-outline .card-title {
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.card-outline h5 {
+  margin-top: 12px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ===== CARD CONTAINER ===== */
+.dashboard-cards {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* ===== TABLE ===== */
+.card-outline table {
+  margin-bottom: 0;
+}
+
+.card-outline thead {
+  background-color: #f9fafb;
+}
+
+.card-outline th {
+  color: #374151;
+  font-weight: 600;
+}
+
+.card-outline tbody tr:hover {
+  background-color: #f7f7f7;
+}
+
+/* ===== STATUS BADGE ===== */
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.status-badge.done {
+  background-color: #dcfce7;
+  color: #166534;
+}
