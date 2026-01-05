@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
 	config "github.com/timiithy/pre-intern-task-telkom/database"
 	"github.com/timiithy/pre-intern-task-telkom/handlers"
 )
@@ -20,13 +21,15 @@ func main() {
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Use(middleware.CORS())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000"},
+		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+	}))
 
 	// Dashboard routes
 	e.GET("/api/dashboard/stats", handlers.GetDashboardStats)
 	e.GET("/api/dashboard/top-users", handlers.GetTopUsers)
 	e.GET("/api/dashboard/top-books", handlers.GetTopBooks)
-	e.GET("/api/dashboard/avg-duration", handlers.GetAverageBorrowingDuration)
 
 	// Buku routes
 	e.GET("/api/buku", handlers.GetAllBuku)

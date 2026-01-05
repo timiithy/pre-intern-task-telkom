@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	config "github.com/timiithy/pre-intern-task-telkom/database"
@@ -48,4 +49,32 @@ func DeletePeminjaman(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 	return c.JSON(http.StatusOK, map[string]string{"message": "Borrowing record deleted successfully"})
+}
+
+func ReturnBook(c echo.Context) error {
+	id := c.Param("id")
+
+	var peminjaman models.Peminjaman
+	if err := config.DB.Preload("Pengguna").Preload("Buku").First(&peminjaman, "id_peminjaman = ?", id).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Borrowing record not found"})
+	}
+
+	// If already returned, just return current data
+	if peminjaman.ReturnedAt != nil {
+		return c.JSON(http.StatusOK, peminjaman)
+	}
+
+	now := time.Now()
+	peminjaman.ReturnedAt = &now
+
+	if err := config.DB.Save(&peminjaman).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	// Reload with relations
+	if err := config.DB.Preload("Pengguna").Preload("Buku").First(&peminjaman, "id_peminjaman = ?", peminjaman.IDPeminjaman).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, peminjaman)
 }

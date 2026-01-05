@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	models "github.com/timiithy/pre-intern-task-telkom/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -22,10 +23,26 @@ func ConnectDB() {
 		log.Fatal("Missing URL at .env")
 	}
 	var err error
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		panic("Failed: " + err.Error())
 	}
 
 	fmt.Println("We're in!")
+}
+
+func MigrateDB() {
+	if DB == nil {
+		log.Fatal("database is not connected")
+	}
+
+	if err := DB.AutoMigrate(
+		&models.Buku{},
+		&models.Pengguna{},
+		&models.Peminjaman{},
+	); err != nil {
+		log.Fatalf("failed to migrate database: %v", err)
+	}
 }
