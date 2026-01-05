@@ -12,7 +12,6 @@ const Dashboard = () => {
   const [topBooks, setTopBooks] = useState([]);
 
   useEffect(() => {
-    // === STAT DASHBOARD ===
     api.get("/dashboard/stats")
       .then(res => {
         const data = res.data;
@@ -25,17 +24,14 @@ const Dashboard = () => {
       })
       .catch(console.error);
 
-    // === RECENT PEMINJAMAN ===
     api.get("/peminjaman")
       .then(res => setRecentBorrows(res.data))
       .catch(console.error);
 
-    // === TOP 10 USER ===
     api.get("/dashboard/top-users")
       .then(res => setTopUsers(res.data))
       .catch(console.error);
 
-    // === TOP 10 BUKU ===
     api.get("/dashboard/top-books")
       .then(res => setTopBooks(res.data))
       .catch(console.error);
