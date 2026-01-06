@@ -11,6 +11,7 @@ import (
 type Buku struct {
 	IDBuku   uuid.UUID `gorm:"type:uuid;primaryKey;default:gen_random_uuid();column:id_buku" json:"id_buku"`
 	NamaBuku string    `gorm:"column:nama_buku" json:"nama_buku"`
+	Stok     int16     `gorm:"type:smallint" json:"stok"`
 }
 
 func (Buku) TableName() string {

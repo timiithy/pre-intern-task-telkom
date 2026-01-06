@@ -53,5 +53,5 @@ func main() {
 	e.DELETE("/api/peminjaman/:id", handlers.DeletePeminjaman)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":8081"))
 }
