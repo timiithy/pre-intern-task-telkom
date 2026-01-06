@@ -1,15 +1,12 @@
-import { useState } from "react";
-import BorrowFormModal from "./BorrowFormModal";
 import api from "../services/api";
 
 
 const BorrowTable = ({ data, refresh }) => {
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="card-outline">
       <h5>Manajemen Peminjaman</h5>
-
+      <div className="table-scroll">
       <table className="highlight">
         <thead>
           <tr>
@@ -60,21 +57,7 @@ const BorrowTable = ({ data, refresh }) => {
           ))}
         </tbody>
       </table>
-
-      <button
-        className="btn green"
-        style={{ marginTop: "16px" }}
-        onClick={() => setShowModal(true)}
-      >
-        + Tambah Peminjaman
-      </button>
-
-      {showModal && (
-        <BorrowFormModal
-          onClose={() => setShowModal(false)}
-          onSuccess={refresh}
-        />
-      )}
+      </div>
     </div>
   );
 };

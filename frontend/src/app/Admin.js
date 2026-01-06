@@ -3,15 +3,19 @@ import Tabs from "../components/Tabs";
 import UserTable from "../components/UserTable";
 import BookTable from "../components/BookTable";
 import BorrowTable from "../components/BorrowTable";
+import BorrowFormModal from "../components/BorrowFormModal";
+import BookFormModal from "../components/BookFormModal";
+import UserFormModal from "../components/UserFormModal";
 import api from "../services/api";
+
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("user");
-
   const [users, setUsers] = useState([]);
   const [books, setBooks] = useState([]);
   const [borrows, setBorrows] = useState([]);
-
+  const [showModal, setShowModal] = useState(false);
+  
   const fetchUsers = async () => {
     const res = await api.get("/pengguna");
     setUsers(res.data);
@@ -25,7 +29,39 @@ const Admin = () => {
   const fetchBorrows = async () => {
     const res = await api.get("/peminjaman");
     setBorrows(res.data);
+  }
+  ;
+  const getActionConfig = () => {
+    switch (activeTab) {
+      case "user":
+        return {
+          label: "+ Tambah User",
+          modal: "user",
+          refresh: fetchUsers,
+        };
+      case "book":
+        return {
+          label: "+ Tambah Buku",
+          modal: "book",
+          refresh: fetchBooks,
+        };
+      case "borrow":
+        return {
+          label: "+ Tambah Peminjaman",
+          modal: "borrow",
+          refresh: fetchBorrows,
+        };
+      default:
+        return {};
+    }
   };
+
+        const action = getActionConfig();
+        useEffect(() => {
+        fetchUsers();
+        fetchBooks();
+        fetchBorrows();
+        }, []);
 
   useEffect(() => {
     fetchUsers();
@@ -34,12 +70,12 @@ const Admin = () => {
   }, []);
 
   return (
-    <div className="container" style={{ marginTop: "40px" }}>
+    <div className="container" style={{ marginTop: "30px" }}>
       <h4 className="center-align">Admin Management</h4>
 
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <div style={{ marginTop: "32px" }}>
+      <div style={{ marginTop: "25px" }}>
         {activeTab === "user" && (
           <UserTable data={users} refresh={fetchUsers} />
         )}
@@ -49,6 +85,38 @@ const Admin = () => {
         {activeTab === "borrow" && (
           <BorrowTable data={borrows} refresh={fetchBorrows} />
         )}
+        {action.label && (
+          <button
+          className="btn green"
+          style={{ marginTop: "15px" }}
+          onClick={() => setShowModal(true)}
+  >
+            {action.label}
+            </button>
+        )}
+
+
+      {showModal && action.modal === "user" && (
+      <UserFormModal
+      onClose={() => setShowModal(false)}
+      onSuccess={action.refresh}
+      />
+      )}
+
+      {showModal && action.modal === "book" && (
+      <BookFormModal
+      onClose={() => setShowModal(false)}
+      onSuccess={action.refresh}
+      />
+      )}
+
+      {showModal && action.modal === "borrow" && (
+      <BorrowFormModal
+      onClose={() => setShowModal(false)}
+      onSuccess={action.refresh}
+      />
+      )}
+
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import UserFormModal from "./UserFormModal";
 import api from "../services/api";
 
 
@@ -9,7 +8,7 @@ const UserTable = ({ data, refresh }) => {
   return (
     <div className="card-outline">
       <h5>Manajemen User</h5>
-
+      <div className="table-scroll">
       <table className="highlight">
         <thead>
           <tr>
@@ -44,29 +43,14 @@ const UserTable = ({ data, refresh }) => {
       alert("Gagal menghapus user");
     }
   }}
->
-  HAPUS
+>HAPUS
 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      <button
-        className="btn green"
-        style={{ marginTop: "16px" }}
-        onClick={() => setShowModal(true)}
-      >
-        + Tambah User
-      </button>
-
-      {showModal && (
-        <UserFormModal
-          onClose={() => setShowModal(false)}
-          onSuccess={refresh}
-        />
-      )}
+    </div>
     </div>
   );
 };

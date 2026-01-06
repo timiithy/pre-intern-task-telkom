@@ -1,14 +1,12 @@
-import { useState } from "react";
-import BookFormModal from "./BookFormModal";
 import api from "../services/api";
 
 const BookTable = ({ data, refresh }) => {
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="card-outline">
       <h5>Manajemen Buku</h5>
 
+      <div className="table-scroll">
       <table className="highlight">
         <thead>
           <tr>
@@ -51,21 +49,7 @@ const BookTable = ({ data, refresh }) => {
           ))}
         </tbody>
       </table>
-
-      <button
-        className="btn green"
-        style={{ marginTop: "16px" }}
-        onClick={() => setShowModal(true)}
-      >
-        + Tambah Buku
-      </button>
-
-      {showModal && (
-        <BookFormModal
-          onClose={() => setShowModal(false)}
-          onSuccess={refresh}
-        />
-      )}
+      </div>
     </div>
   );
 };
