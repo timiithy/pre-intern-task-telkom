@@ -8,63 +8,76 @@ import (
 	models "github.com/timiithy/pre-intern-task-telkom/model"
 )
 
+/* ===================== STATS ===================== */
+
 func GetDashboardStats(c echo.Context) error {
 	var stats models.Dashboard
 
+	// total buku
 	config.DB.Model(&models.Buku{}).Count(&stats.TotalBuku)
+
+	// total user
 	config.DB.Model(&models.Pengguna{}).Count(&stats.TotalUser)
-	config.DB.Model(&models.Peminjaman{}).Where("returned_at IS NULL").Count(&stats.TotalPinjam)
+
+	// total peminjaman (semua record)
+	config.DB.Model(&models.Peminjaman{}).Count(&stats.TotalPeminjaman)
+
+	// buku yang sedang dipinjam (belum returned)
+	config.DB.Model(&models.Peminjaman{}).
+		Where("returned_at IS NULL").
+		Count(&stats.BukuDipinjam)
 
 	return c.JSON(http.StatusOK, stats)
 }
+
+/* ===================== TOP USERS (SUM DURASI) ===================== */
 
 func GetTopUsers(c echo.Context) error {
 	var topUsers []models.TopPengguna
 
 	err := config.DB.Table("peminjaman").
-		Select("pengguna.id_pengguna, pengguna.nama, COUNT(peminjaman.id_peminjaman) as total_pinjam").
+		Select(`
+			pengguna.id_pengguna,
+			pengguna.nama,
+			COALESCE(SUM(peminjaman.durasi), 0) AS total_hari
+		`).
 		Joins("JOIN pengguna ON peminjaman.id_pengguna = pengguna.id_pengguna").
 		Group("pengguna.id_pengguna, pengguna.nama").
-		Order("total_pinjam DESC").
+		Order("total_hari DESC").
 		Limit(10).
 		Scan(&topUsers).Error
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"error": err.Error(),
+		})
 	}
 
 	return c.JSON(http.StatusOK, topUsers)
 }
 
+/* ===================== TOP BOOKS (SUM DURASI) ===================== */
+
 func GetTopBooks(c echo.Context) error {
 	var topBooks []models.TopBuku
 
 	err := config.DB.Table("peminjaman").
-		Select("buku.id_buku, buku.nama_buku, COUNT(peminjaman.id_peminjaman) as total_pinjam").
+		Select(`
+			buku.id_buku,
+			buku.nama_buku,
+			COALESCE(SUM(peminjaman.durasi), 0) AS total_hari
+		`).
 		Joins("JOIN buku ON peminjaman.id_buku = buku.id_buku").
 		Group("buku.id_buku, buku.nama_buku").
-		Order("total_pinjam DESC").
+		Order("total_hari DESC").
 		Limit(10).
 		Scan(&topBooks).Error
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"error": err.Error(),
+		})
 	}
 
 	return c.JSON(http.StatusOK, topBooks)
-}
-
-func GetAverageBorrowingDuration(c echo.Context) error {
-	var avgDuration float64
-
-	err := config.DB.Model(&models.Peminjaman{}).
-		Select("AVG(durasi)").
-		Where("returned_at IS NOT NULL").
-		Scan(&avgDuration).Error
-
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
-	}
-
-	return c.JSON(http.StatusOK, map[string]float64{"average_duration": avgDuration})
 }
