@@ -1,10 +1,6 @@
-import { useState } from "react";
 import api from "../services/api";
 
-
 const UserTable = ({ data, refresh }) => {
-  const [showModal, setShowModal] = useState(false);
-
   return (
     <div className="card-outline">
       <h5>Manajemen User</h5>

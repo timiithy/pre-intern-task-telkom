@@ -11,6 +11,7 @@ const BookTable = ({ data, refresh }) => {
         <thead>
           <tr>
             <th>Judul</th>
+            <th>Stock</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -18,7 +19,7 @@ const BookTable = ({ data, refresh }) => {
         <tbody>
           {data.length === 0 && (
             <tr>
-              <td colSpan="2" className="center-align">
+              <td colSpan="3" className="left-align">
                 Belum ada buku
               </td>
             </tr>
@@ -27,7 +28,8 @@ const BookTable = ({ data, refresh }) => {
           {data.map((buku) => (
             <tr key={buku.id_buku}>
               <td>{buku.nama_buku}</td>
-              <td>
+              <td>{buku.stok}</td>
+              <td className="left-align">
                 <button
   className="btn-small red"
   onClick={async () => {

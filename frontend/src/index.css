@@ -148,3 +148,10 @@ body {
   background-color: #ccc;
   border-radius: 4px;
 }
+
+/* style untuk opsi disabled di dropdown Materialize */
+.modal-box .select-wrapper .disabled,
+.modal-box .select-dropdown li.disabled {
+  color: #9ca3af !important;
+  opacity: 0.7;
+}
