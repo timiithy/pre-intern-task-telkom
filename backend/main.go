@@ -49,9 +49,9 @@ func main() {
 	e.GET("/api/peminjaman", handlers.GetAllPeminjaman)
 	e.GET("/api/peminjaman/:id", handlers.GetPeminjamanByID)
 	e.POST("/api/peminjaman", handlers.CreatePeminjaman)
-	e.PUT("/api/peminjaman/:id/return", handlers.ReturnBook)
+	e.PUT("/api/peminjaman/:id/balikkin", handlers.BalikinBuku)
 	e.DELETE("/api/peminjaman/:id", handlers.DeletePeminjaman)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":8081"))
 }
