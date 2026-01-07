@@ -59,3 +59,13 @@ type TopBuku struct {
 	NamaBuku  string    `gorm:"column:nama_buku" json:"nama_buku"`
 	TotalHari int64     `gorm:"column:total_hari" json:"total_hari"`
 }
+
+type CreatePeminjamanInput struct {
+	IDPengguna          string `json:"id_pengguna"`
+	IDBuku              string `json:"id_buku"`
+	TanggalPengembalian string `json:"tanggal_pengembalian"`
+}
+
+func (CreatePeminjamanInput) TableName() string {
+	return "peminjaman"
+}
