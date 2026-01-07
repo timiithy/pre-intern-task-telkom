@@ -32,6 +32,13 @@ func CreatePeminjaman(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
+	// Cek ketersediaan stok buku
+	var buku models.Buku
+
+	if buku.Stok <= 0 {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Buku sedang tidak tersedia"})
+	}
+
 	now := time.Now()
 	peminjaman.TanggalPeminjaman = &now
 
@@ -42,6 +49,12 @@ func CreatePeminjaman(c echo.Context) error {
 	}
 
 	if err := config.DB.Create(&peminjaman).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	// Decrease book stock by 1
+	buku.Stok -= 1
+	if err := config.DB.Save(&buku).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 
@@ -76,6 +89,13 @@ func BalikinBuku(c echo.Context) error {
 
 	if err := config.DB.Save(&peminjaman).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	// Isi ulang stok buku
+	var buku models.Buku
+	if err := config.DB.First(&buku, "id_buku = ?", peminjaman.IDBuku).Error; err == nil {
+		buku.Stok += 1
+		config.DB.Save(&buku)
 	}
 
 	if err := config.DB.Preload("Pengguna").Preload("Buku").First(&peminjaman, "id_peminjaman = ?", peminjaman.IDPeminjaman).Error; err != nil {
