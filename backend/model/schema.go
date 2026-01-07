@@ -32,9 +32,9 @@ type Peminjaman struct {
 	IDBuku              uuid.UUID  `gorm:"type:uuid;column:id_buku" json:"id_buku"`
 	TanggalPeminjaman   *time.Time `gorm:"column:tanggal_pinjam" json:"tanggal_pinjam"`
 	TanggalPengembalian *time.Time `gorm:"column:tanggal_pengembalian" json:"tanggal_pengembalian,omitempty"`
-
-	Pengguna Pengguna `gorm:"foreignKey:IDPengguna;references:IDPengguna" json:"pengguna_detail,omitempty"`
-	Buku     Buku     `gorm:"foreignKey:IDBuku;references:IDBuku" json:"buku_detail,omitempty"`
+	Status              string     `gorm:"column:status" json:"status"`
+	Pengguna            Pengguna   `gorm:"foreignKey:IDPengguna;references:IDPengguna" json:"pengguna_detail,omitempty"`
+	Buku                Buku       `gorm:"foreignKey:IDBuku;references:IDBuku" json:"buku_detail,omitempty"`
 }
 
 func (Peminjaman) TableName() string {
