@@ -10,11 +10,27 @@ import (
 )
 
 func GetAllPeminjaman(c echo.Context) error {
+	updateStatusPengembalian()
 	var peminjaman []models.Peminjaman
 	if err := config.DB.Preload("Pengguna").Preload("Buku").Find(&peminjaman).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 	return c.JSON(http.StatusOK, peminjaman)
+}
+
+func updateStatusPengembalian() {
+	var overduePeminjaman []models.Peminjaman
+	now := time.Now()
+	config.DB.Where("tanggal_pengembalian < ? AND status = ?", now, "dipinjam").Find(&overduePeminjaman)
+	for _, p := range overduePeminjaman {
+		var buku models.Buku
+		if err := config.DB.First(&buku, "id_buku = ?", p.IDBuku).Error; err == nil {
+			buku.Stok += 1
+			config.DB.Save(&buku)
+		}
+		p.Status = "selesai"
+		config.DB.Save(&p)
+	}
 }
 
 func GetPeminjamanByID(c echo.Context) error {
@@ -47,6 +63,7 @@ func CreatePeminjaman(c echo.Context) error {
 		durasi := int(duration.Hours() / 24)
 		peminjaman.Durasi = int16(durasi)
 	}
+	peminjaman.Status = "dipinjam"
 
 	if err := config.DB.Create(&peminjaman).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
