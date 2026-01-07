@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"math"
 	"net/http"
 	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/labstack/echo/v4"
 	config "github.com/timiithy/pre-intern-task-telkom/database"
@@ -27,19 +30,54 @@ func GetPeminjamanByID(c echo.Context) error {
 }
 
 func CreatePeminjaman(c echo.Context) error {
-	peminjaman := new(models.Peminjaman)
-	if err := c.Bind(peminjaman); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	var input models.CreatePeminjamanInput
+
+	if err := c.Bind(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "payload tidak valid",
+		})
+	}
+
+	idPengguna, err := uuid.Parse(input.IDPengguna)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "id_pengguna tidak valid"})
+	}
+
+	idBuku, err := uuid.Parse(input.IDBuku)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "id_buku tidak valid"})
+	}
+
+	tanggalKembali, err := time.Parse("2006-01-02", input.TanggalPengembalian)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "format tanggal_pengembalian tidak valid"})
 	}
 
 	now := time.Now()
-	peminjaman.TanggalPeminjaman = &now
+
+	if tanggalKembali.Before(now) {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "tanggal pengembalian harus setelah tanggal pinjam",
+		})
+	}
+
+	durasi := int16(
+		math.Ceil(
+			tanggalKembali.Sub(now).Hours() / 24,
+		),
+	)
+
+	peminjaman := models.Peminjaman{
+		IDPengguna:          idPengguna,
+		IDBuku:              idBuku,
+		TanggalPeminjaman:   &now,
+		TanggalPengembalian: &tanggalKembali,
+		Durasi:              durasi,
+	}
 
 	if err := config.DB.Create(&peminjaman).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
-
-	config.DB.Preload("Pengguna").Preload("Buku").First(&peminjaman, "id_peminjaman = ?", peminjaman.IDPeminjaman)
 
 	return c.JSON(http.StatusCreated, peminjaman)
 }
