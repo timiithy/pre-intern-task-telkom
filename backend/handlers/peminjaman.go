@@ -75,6 +75,12 @@ func CreatePeminjaman(c echo.Context) error {
 		Durasi:              durasi,
 	}
 
+	if peminjaman.TanggalPengembalian != nil {
+		duration := peminjaman.TanggalPengembalian.Sub(now)
+		durasi := int(duration.Hours() / 24)
+		peminjaman.Durasi = int16(durasi)
+	}
+
 	if err := config.DB.Create(&peminjaman).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
@@ -117,6 +123,7 @@ func BalikinBuku(c echo.Context) error {
 	return c.JSON(http.StatusOK, peminjaman)
 }
 
+// deprecated cuman jaga-jaga simpen aja hehe
 func GetDurasi(c echo.Context) error {
 	id := c.Param("id")
 	var peminjaman models.Peminjaman

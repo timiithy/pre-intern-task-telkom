@@ -31,16 +31,21 @@ const BorrowFormModal = ({ onClose, onSuccess }) => {
       alert("Tanggal kembali wajib diisi");
       return;
     }
-
+  try {
     await api.post("/peminjaman", {
       id_pengguna: idPengguna,
       id_buku: idBuku,
-      tanggal_kembali: tanggalKembali,
+      tanggal_pengembalian: tanggalKembali,
     });
+  } catch (error) {
+    alert(error.response?.data?.error || "Gagal menyimpan peminjaman");
+  }
 
     onSuccess();
     onClose();
+    console.log(idPengguna, idBuku);
   };
+
 
   return (
     <div className="modal-overlay">
