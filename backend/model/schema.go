@@ -30,7 +30,7 @@ type Peminjaman struct {
 	Durasi              int16      `gorm:"type:smallint" json:"durasi"`
 	IDPengguna          uuid.UUID  `gorm:"type:uuid;column:id_pengguna" json:"id_pengguna"`
 	IDBuku              uuid.UUID  `gorm:"type:uuid;column:id_buku" json:"id_buku"`
-	TanggalPeminjaman   *time.Time `gorm:"column:tanggal_peminjaman" json:"tanggal_peminjaman"`
+	TanggalPeminjaman   *time.Time `gorm:"column:tanggal_pinjam" json:"tanggal_pinjam"`
 	TanggalPengembalian *time.Time `gorm:"column:tanggal_pengembalian" json:"tanggal_pengembalian,omitempty"`
 
 	Pengguna Pengguna `gorm:"foreignKey:IDPengguna;references:IDPengguna" json:"pengguna_detail,omitempty"`
