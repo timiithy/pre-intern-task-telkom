@@ -21,17 +21,13 @@ const UserFormModal = ({ onClose, onSuccess }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-box">
-                <h5>Form User</h5>
+                <h5>Masukkan Nama Peminjam</h5>
 
                 <input
                     placeholder="Nama Lengkap"
                     value={nama}
                     onChange={(e) => setNama(e.target.value)}
                 />
-
-                {/* Backend belum punya email & ID manual */}
-                <input placeholder="Email" disabled />
-                <input placeholder="ID User" disabled />
 
                 <div style={{ marginTop: "16px" }}>
                     <button className="btn blue" onClick={handleSubmit}>

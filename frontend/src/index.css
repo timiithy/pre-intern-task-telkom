@@ -135,6 +135,13 @@ body {
   width: 400px;
 }
 
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
 .table-scroll {
   max-height: 200px;  
   overflow-y: auto;
@@ -149,9 +156,30 @@ body {
   border-radius: 4px;
 }
 
-/* style untuk opsi disabled di dropdown Materialize */
 .modal-box .select-wrapper .disabled,
 .modal-box .select-dropdown li.disabled {
   color: #9ca3af !important;
   opacity: 0.7;
+}
+
+.btn-small {
+  transition: all 0.2s ease-out;
+}
+
+.btn-small:hover {
+  transform: translateY(1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.btn-small.blue:hover {
+  background-color: #1565c0;
+}
+
+.btn-small.red:hover {
+  background-color: #c62828;
+}
+
+.btn-small.grey:hover {
+  background-color: #616161;
+  color: white;
 }
