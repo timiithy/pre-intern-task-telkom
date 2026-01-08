@@ -69,15 +69,18 @@ func CreatePeminjaman(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "format tanggal_pengembalian tidak valid"})
 	}
 
-	// Cek ketersediaan stok buku
+	// --- AMBIL BUKU DULU DARI DB ---
 	var buku models.Buku
+	if err := config.DB.First(&buku, "id_buku = ?", idBuku).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Buku tidak ditemukan"})
+	}
 
+	// Cek stok buku
 	if buku.Stok <= 0 {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Buku sedang tidak tersedia"})
 	}
 
 	now := time.Now()
-
 	if tanggalKembali.Before(now) {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "tanggal pengembalian harus setelah tanggal pinjam",
@@ -96,6 +99,7 @@ func CreatePeminjaman(c echo.Context) error {
 		TanggalPeminjaman:   &now,
 		TanggalPengembalian: &tanggalKembali,
 		Durasi:              durasi,
+		Status:              "dipinjam",
 	}
 
 	if peminjaman.TanggalPengembalian != nil {
@@ -103,19 +107,20 @@ func CreatePeminjaman(c echo.Context) error {
 		durasi := int(duration.Hours() / 24)
 		peminjaman.Durasi = int16(durasi)
 	}
-	peminjaman.Status = "dipinjam"
 
+	// Simpan peminjaman
 	if err := config.DB.Create(&peminjaman).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 
-	// Decrease book stock by 1
+	// --- KURANGI STOK BUKU ---
 	buku.Stok -= 1
 	if err := config.DB.Save(&buku).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 
-	config.DB.Preload("Pengguna").Preload("Buku").First(&peminjaman, "id_peminjaman = ?", peminjaman.IDPeminjaman)
+	config.DB.Preload("Pengguna").Preload("Buku").
+		First(&peminjaman, "id_peminjaman = ?", peminjaman.IDPeminjaman)
 
 	return c.JSON(http.StatusCreated, peminjaman)
 }

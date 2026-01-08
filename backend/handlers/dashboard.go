@@ -24,7 +24,7 @@ func GetDashboardStats(c echo.Context) error {
 
 	// buku yang sedang dipinjam (belum returned)
 	config.DB.Model(&models.Peminjaman{}).
-		Where("returned_at IS NULL").
+		Where("status = ?", "dipinjam").
 		Count(&stats.BukuDipinjam)
 
 	return c.JSON(http.StatusOK, stats)

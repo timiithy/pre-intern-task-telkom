@@ -24,6 +24,7 @@ func ConnectDB() {
 	}
 	var err error
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+		PrepareStmt:                              false,
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {

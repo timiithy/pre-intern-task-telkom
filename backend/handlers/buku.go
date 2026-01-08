@@ -91,8 +91,25 @@ func UpdateBuku(c echo.Context) error {
 func DeleteBuku(c echo.Context) error {
 	id := c.Param("id")
 
+	// cek apakah buku sedang dipinjam
+	var count int64
+	if err := config.DB.Model(&models.Peminjaman{}).
+		Where("id_buku = ? AND status = ?", id, "dipinjam").
+		Count(&count).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	if count > 0 {
+		// masih ada peminjaman aktif untuk buku ini
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "Buku tidak dapat dihapus karena sedang dipinjam",
+		})
+	}
+
+	// aman untuk dihapus
 	if err := config.DB.Delete(&models.Buku{}, "id_buku = ?", id).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
+
 	return c.JSON(http.StatusOK, map[string]string{"message": "Book deleted successfully"})
 }
