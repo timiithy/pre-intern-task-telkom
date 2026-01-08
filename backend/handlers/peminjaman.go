@@ -76,6 +76,9 @@ func CreatePeminjaman(c echo.Context) error {
 	}
 
 	// Cek stok buku
+	if err := config.DB.First(&buku, "id_buku = ?", idBuku).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Buku tidak ditemukan"})
+	}
 	if buku.Stok <= 0 {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Buku sedang tidak tersedia"})
 	}
@@ -86,7 +89,6 @@ func CreatePeminjaman(c echo.Context) error {
 			"error": "tanggal pengembalian harus setelah tanggal pinjam",
 		})
 	}
-
 	durasi := int16(
 		math.Ceil(
 			tanggalKembali.Sub(now).Hours() / 24,
