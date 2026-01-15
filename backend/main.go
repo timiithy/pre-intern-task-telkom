@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -21,10 +23,18 @@ func main() {
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000"},
+		AllowOrigins: []string{
+			"http://localhost:3000",
+			"https://pre-intern-task-telkom.vercel.app",
+		},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 	}))
+
+	e.GET("/health", func(c echo.Context) error {
+		return c.JSON(200, map[string]string{"status": "ok"})
+	})
 
 	// Dashboard routes
 	e.GET("/api/dashboard/stats", handlers.GetDashboardStats)
@@ -52,6 +62,11 @@ func main() {
 	e.PUT("/api/peminjaman/:id/balikkin", handlers.BalikinBuku)
 	e.DELETE("/api/peminjaman/:id", handlers.DeletePeminjaman)
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
+	}
+
 	// Start server
-	e.Logger.Fatal(e.Start(":8081"))
+	e.Logger.Fatal(e.Start(":" + port))
 }
