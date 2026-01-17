@@ -25,11 +25,9 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{
-			"http://localhost:3000",
-			"https://pre-intern-task-telkom.vercel.app",
-		},
+		AllowOrigins: []string{"*"},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders: []string{"Content-Type", "Authorization"},
 	}))
 
 	e.GET("/health", func(c echo.Context) error {
