@@ -7,9 +7,14 @@ import (
 )
 
 type Buku struct {
-	IDBuku   uuid.UUID `gorm:"type:uuid;primaryKey;default:gen_random_uuid();column:id_buku" json:"id_buku"`
-	NamaBuku string    `gorm:"column:nama_buku" json:"nama_buku"`
-	Stok     int16     `gorm:"type:smallint" json:"stok"`
+	IDBuku    uuid.UUID `gorm:"type:uuid;primaryKey;default:gen_random_uuid();column:id_buku" json:"id_buku"`
+	NamaBuku  string    `gorm:"column:nama_buku" json:"nama_buku"`
+	Stok      int16     `gorm:"type:smallint" json:"stok"`
+	ISBN      string    `gorm:"column:isbn" json:"isbn,omitempty"`
+	DOI       string    `gorm:"column:doi" json:"doi,omitempty"`
+	Author    string    `gorm:"column:author_buku" json:"author_buku,omitempty"`
+	Deskripsi string    `gorm:"column:deskripsi_buku" json:"deskripsi_buku,omitempty"`
+	CoverURL  string    `gorm:"column:cover_url" json:"cover_url,omitempty"`
 }
 
 func (Buku) TableName() string {

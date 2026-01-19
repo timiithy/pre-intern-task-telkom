@@ -29,8 +29,13 @@ func GetBukuByID(c echo.Context) error {
 
 func CreateBuku(c echo.Context) error {
 	var payload struct {
-		NamaBuku string `json:"nama_buku" validate:"required"`
-		Stok     int16  `json:"stok" validate:"required,gte=0"`
+		NamaBuku  string `gorm:"column:nama_buku" json:"nama_buku"`
+		Stok      int16  `gorm:"type:smallint" json:"stok"`
+		ISBN      string `gorm:"column:isbn" json:"isbn,omitempty"`
+		DOI       string `gorm:"column:doi" json:"doi,omitempty"`
+		Author    string `gorm:"column:author_buku" json:"author_buku,omitempty"`
+		Deskripsi string `gorm:"column:deskripsi_buku" json:"deskripsi_buku,omitempty"`
+		CoverURL  string `gorm:"column:cover_url" json:"cover_url,omitempty"`
 	}
 
 	if err := c.Bind(&payload); err != nil {
@@ -45,20 +50,41 @@ func CreateBuku(c echo.Context) error {
 		payload.Stok = 1
 	}
 
+	if payload.Author == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Author is required"})
+	}
+	if payload.Deskripsi == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Deskripsi is required"})
+	}
+	if payload.ISBN == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "ISBN is required"})
+	}
+	if payload.DOI == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "DOI is required"})
+	}
+
 	var existing models.Buku
 	err := config.DB.Where("nama_buku = ?", payload.NamaBuku).First(&existing).Error
 
 	switch {
 	case err == nil:
 		existing.Stok += payload.Stok
+		if payload.CoverURL != "" {
+			existing.CoverURL = payload.CoverURL
+		}
 		if err := config.DB.Save(&existing).Error; err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 		}
 		return c.JSON(http.StatusOK, existing)
 	case errors.Is(err, gorm.ErrRecordNotFound):
 		newBuku := models.Buku{
-			NamaBuku: payload.NamaBuku,
-			Stok:     payload.Stok,
+			NamaBuku:  payload.NamaBuku,
+			Stok:      payload.Stok,
+			ISBN:      payload.ISBN,
+			DOI:       payload.DOI,
+			Author:    payload.Author,
+			Deskripsi: payload.Deskripsi,
+			CoverURL:  payload.CoverURL,
 		}
 		if err := config.DB.Create(&newBuku).Error; err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
