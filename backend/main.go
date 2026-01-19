@@ -10,7 +10,8 @@ import (
 
 	config "github.com/timiithy/pre-intern-task-telkom/database"
 	"github.com/timiithy/pre-intern-task-telkom/handlers"
-	appmw "github.com/timiithy/pre-intern-task-telkom/middleware"
+
+	authmw "github.com/timiithy/pre-intern-task-telkom/middleware"
 )
 
 var jwtSecret = []byte("CHANGE_ME_SECRET")
@@ -36,6 +37,19 @@ func main() {
 		return c.JSON(200, map[string]string{"status": "ok"})
 	})
 
+	// Auth routes
+	e.POST("/api/auth/login", handlers.Login)
+
+	// Public routes (showcase nanti di sini)
+
+	// User routes (RBAC)
+	user := e.Group("/api", authmw.AuthRequired, authmw.RequireRole("user", "admin"))
+	user.GET("/showcase/buku", handlers.GetAllBuku)
+	user.GET("/showcase/buku/:id", handlers.GetBukuByID)
+
+	// Admin routes (RBAC)
+	admin := e.Group("/api", authmw.AuthRequired, authmw.RequireRole("admin"))
+
 	e.GET("/api/buku", handlers.GetAllBuku)
 	e.GET("/api/buku/:id", handlers.GetBukuByID)
 
@@ -52,7 +66,7 @@ func main() {
 
 	// Admin-only routes
 	admin := auth.Group("")
-	admin.Use(appmw.RequireRole("admin"))
+	admin.Use(authmw.RequireRole("admin"))
 
 	// Dashboard routes (Admin)
 	admin.GET("/dashboard/stats", handlers.GetDashboardStats)
