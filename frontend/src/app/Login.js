@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import api from "../services/api";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -23,7 +24,11 @@ const Login = () => {
             localStorage.setItem("token", token);
             localStorage.setItem("role", role);
 
-            navigate("/dashboard");
+            if (role === "admin") {
+                navigate("/dashboard");
+            } else {
+                navigate("/showcase");
+            }
         } catch (err) {
             console.error(err);
             alert("Login gagal");
