@@ -183,3 +183,51 @@ body {
   background-color: #616161;
   color: white;
 }
+/*SHOPEE FEEL*/
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+
+/* CARD */
+.book-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+}
+
+/* IMAGE */
+.book-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* INFO */
+.book-info {
+  padding: 10px;
+}
+
+.book-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.book-stock {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
