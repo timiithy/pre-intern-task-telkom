@@ -3,18 +3,13 @@ package main
 import (
 	"os"
 
-	"github.com/golang-jwt/jwt/v5"
-	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	emiddleware "github.com/labstack/echo/v4/middleware"
 
 	config "github.com/timiithy/pre-intern-task-telkom/database"
 	"github.com/timiithy/pre-intern-task-telkom/handlers"
-
 	authmw "github.com/timiithy/pre-intern-task-telkom/middleware"
 )
-
-var jwtSecret = []byte("CHANGE_ME_SECRET")
 
 func main() {
 	// Connect & migrate DB
@@ -50,30 +45,14 @@ func main() {
 	// Admin routes (RBAC)
 	admin := e.Group("/api", authmw.AuthRequired, authmw.RequireRole("admin"))
 
-	e.GET("/api/buku", handlers.GetAllBuku)
-	e.GET("/api/buku/:id", handlers.GetBukuByID)
-
-	jwtConfig := echojwt.Config{
-		SigningKey: jwtSecret,
-		NewClaimsFunc: func(c echo.Context) jwt.Claims {
-			return jwt.MapClaims{}
-		},
-	}
-
-	// All routes in this group require a valid JWT
-	auth := e.Group("/api")
-	auth.Use(echojwt.WithConfig(jwtConfig))
-
-	// Admin-only routes
-	admin := auth.Group("")
-	admin.Use(authmw.RequireRole("admin"))
-
 	// Dashboard routes (Admin)
 	admin.GET("/dashboard/stats", handlers.GetDashboardStats)
 	admin.GET("/dashboard/top-users", handlers.GetTopUsers)
 	admin.GET("/dashboard/top-books", handlers.GetTopBooks)
 
 	// Buku CRUD routes (Admin)
+	admin.GET("/buku", handlers.GetAllBuku)
+	admin.GET("/buku/:id", handlers.GetBukuByID)
 	admin.POST("/buku", handlers.CreateBuku)
 	admin.PUT("/buku/:id", handlers.UpdateBuku)
 	admin.DELETE("/buku/:id", handlers.DeleteBuku)
