@@ -260,3 +260,77 @@ body {
   margin-top: 24px;
 }
 
+.book-card.clickable {
+  cursor: pointer;
+}
+
+.book-card.clickable:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* BACKDROP BLUR */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* MODAL CARD */
+.modal-card {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+}
+
+/* CLOSE */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* CONTENT */
+.modal-content {
+  display: flex;
+  gap: 20px;
+}
+
+.detail-image {
+  width: 180px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.detail-info {
+  flex: 1;
+}
+
+.author {
+  color: #666;
+  margin: 4px 0;
+}
+
+.stock {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.desc {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
