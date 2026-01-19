@@ -8,6 +8,7 @@ import (
 
 	config "github.com/timiithy/pre-intern-task-telkom/database"
 	"github.com/timiithy/pre-intern-task-telkom/handlers"
+	authmw "github.com/timiithy/pre-intern-task-telkom/middleware"
 )
 
 func main() {
@@ -34,31 +35,44 @@ func main() {
 		return c.JSON(200, map[string]string{"status": "ok"})
 	})
 
+	// Auth routes
+	e.POST("/api/auth/login", handlers.Login)
+
+	// Public routes (showcase nanti di sini)
+
+	// User routes (RBAC)
+	user := e.Group("/api", authmw.AuthRequired, authmw.RequireRole("user", "admin"))
+	user.GET("/showcase/buku", handlers.GetAllBuku)
+	user.GET("/showcase/buku/:id", handlers.GetBukuByID)
+
+	// Admin routes (RBAC)
+	admin := e.Group("/api", authmw.AuthRequired, authmw.RequireRole("admin"))
+
 	// Dashboard routes
-	e.GET("/api/dashboard/stats", handlers.GetDashboardStats)
-	e.GET("/api/dashboard/top-users", handlers.GetTopUsers)
-	e.GET("/api/dashboard/top-books", handlers.GetTopBooks)
+	admin.GET("/dashboard/stats", handlers.GetDashboardStats)
+	admin.GET("/dashboard/top-users", handlers.GetTopUsers)
+	admin.GET("/dashboard/top-books", handlers.GetTopBooks)
 
 	// Buku routes
-	e.GET("/api/buku", handlers.GetAllBuku)
-	e.GET("/api/buku/:id", handlers.GetBukuByID)
-	e.POST("/api/buku", handlers.CreateBuku)
-	e.PUT("/api/buku/:id", handlers.UpdateBuku)
-	e.DELETE("/api/buku/:id", handlers.DeleteBuku)
+	admin.GET("/buku", handlers.GetAllBuku)
+	admin.GET("/buku/:id", handlers.GetBukuByID)
+	admin.POST("/buku", handlers.CreateBuku)
+	admin.PUT("/buku/:id", handlers.UpdateBuku)
+	admin.DELETE("/buku/:id", handlers.DeleteBuku)
 
 	// Pengguna routes
-	e.GET("/api/pengguna", handlers.GetAllPengguna)
-	e.GET("/api/pengguna/:id", handlers.GetPenggunaByID)
-	e.POST("/api/pengguna", handlers.CreatePengguna)
-	e.PUT("/api/pengguna/:id", handlers.UpdatePengguna)
-	e.DELETE("/api/pengguna/:id", handlers.DeletePengguna)
+	admin.GET("/pengguna", handlers.GetAllPengguna)
+	admin.GET("/pengguna/:id", handlers.GetPenggunaByID)
+	admin.POST("/pengguna", handlers.CreatePengguna)
+	admin.PUT("/pengguna/:id", handlers.UpdatePengguna)
+	admin.DELETE("/pengguna/:id", handlers.DeletePengguna)
 
 	// Peminjaman routes
-	e.GET("/api/peminjaman", handlers.GetAllPeminjaman)
-	e.GET("/api/peminjaman/:id", handlers.GetPeminjamanByID)
-	e.POST("/api/peminjaman", handlers.CreatePeminjaman)
-	e.PUT("/api/peminjaman/:id/balikkin", handlers.BalikinBuku)
-	e.DELETE("/api/peminjaman/:id", handlers.DeletePeminjaman)
+	admin.GET("/peminjaman", handlers.GetAllPeminjaman)
+	admin.GET("/peminjaman/:id", handlers.GetPeminjamanByID)
+	admin.POST("/peminjaman", handlers.CreatePeminjaman)
+	admin.PUT("/peminjaman/:id/balikkin", handlers.BalikinBuku)
+	admin.DELETE("/peminjaman/:id", handlers.DeletePeminjaman)
 
 	port := os.Getenv("PORT")
 	if port == "" {
