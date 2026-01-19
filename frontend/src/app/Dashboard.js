@@ -38,6 +38,14 @@ const Dashboard = () => {
 
   }, []);
 
+ useEffect(() => {
+  	const role = localStorage.getItem("role");
+  	if (role !== "admin") {
+    	window.location.href = "/";
+  	}
+	}, []);
+
+
   return (
     <div className="container" style={{ marginTop: "40px" }}>
       <h4 className="center-align">Dashboard Admin Perpustakaan</h4>

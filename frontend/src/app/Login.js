@@ -27,7 +27,7 @@ const Login = () => {
             if (role === "admin") {
                 navigate("/dashboard");
             } else {
-                navigate("/showcase");
+                navigate("/dashboard-user");
             }
         } catch (err) {
             console.error(err);

@@ -19,6 +19,13 @@ const UserDashboard = () => {
   useEffect(() => {
     fetchBooks();
   }, []);
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role === "admin") {
+    window.location.href = "/dashboard";
+    }
+	}, []);
+
 
   return (
     <div className="container" style={{ marginTop: "40px" }}>
