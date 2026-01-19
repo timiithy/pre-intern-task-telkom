@@ -6,12 +6,28 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = () => {
-        // ini dummy ygy, nanti reza ganti pake API
-        localStorage.setItem("token", "dummy-token");
-        localStorage.setItem("role", "admin");
+    const handleLogin = async () => {
+        try {
+            const res = await api.post("/auth/login", {
+                email,
+                password,
+            });
 
-        navigate("/dashboard");
+            const token = res?.data?.access_token;
+            const role = res?.data?.user?.app_metadata?.role || "user";
+
+            if (!token) {
+                throw new Error("Token tidak ditemukan");
+            }
+
+            localStorage.setItem("token", token);
+            localStorage.setItem("role", role);
+
+            navigate("/dashboard");
+        } catch (err) {
+            console.error(err);
+            alert("Login gagal");
+        }
     };
 
     return (
