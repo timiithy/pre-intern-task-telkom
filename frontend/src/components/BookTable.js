@@ -1,7 +1,6 @@
 import api from "../services/api";
 
 const BookTable = ({ data, refresh }) => {
-
   return (
     <div className="card-outline">
       <div className="table-header">
@@ -10,51 +9,44 @@ const BookTable = ({ data, refresh }) => {
           Refresh
         </button>
       </div>
-      <div className="table-scroll">
-        <table className="highlight">
-          <thead>
-            <tr>
-              <th>Judul</th>
-              <th>Stock</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
 
-          <tbody>
-            {data.length === 0 && (
-              <tr>
-                <td colSpan="3" className="center-align">
-                  Belum ada buku
-                </td>
-              </tr>
-            )}
+      {/* GRID CONTAINER */}
+      <div className="book-grid">
+        {data.length === 0 && (
+          <p className="center-align">Belum ada buku</p>
+        )}
 
-            {data.map((buku) => (
-              <tr key={buku.id_buku}>
-                <td>{buku.nama_buku}</td>
-                <td>{buku.stok}</td>
-                <td className="left-align">
-                  <button
-                    className="btn-small red"
-                    onClick={async () => {
-                      if (!window.confirm("Yakin hapus buku ini?")) return;
+        {data.map((buku) => (
+          <div className="book-card" key={buku.id_buku}>
+            <img
+              src={buku.gambar}
+              alt={buku.nama_buku}
+              className="book-image"
+            />
 
-                      try {
-                        await api.delete(`/buku/${buku.id_buku}`);
-                        refresh(); // ambil ulang data
-                      } catch (err) {
-                        console.error(err);
-                        alert("Gagal menghapus buku");
-                      }
-                    }}
-                  >
-                    HAPUS
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            <div className="book-info">
+              <p className="book-title">{buku.nama_buku}</p>
+              <p className="book-stock">Stok: {buku.stok}</p>
+
+              <button
+                className="btn-small red"
+                onClick={async () => {
+                  if (!window.confirm("Yakin hapus buku ini?")) return;
+
+                  try {
+                    await api.delete(`/buku/${buku.id_buku}`);
+                    refresh();
+                  } catch (err) {
+                    console.error(err);
+                    alert("Gagal menghapus buku");
+                  }
+                }}
+              >
+                Hapus
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
