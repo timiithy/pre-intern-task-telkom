@@ -183,7 +183,7 @@ body {
   background-color: #616161;
   color: white;
 }
-/*SHOPEE FEEL*/
+
 .book-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -194,7 +194,6 @@ body {
 }
 
 
-/* CARD */
 .book-card {
   background: #fff;
   border-radius: 8px;
@@ -207,14 +206,13 @@ body {
   transform: translateY(-4px);
 }
 
-/* IMAGE */
 .book-image {
   width: 100%;
   height: 180px;
   object-fit: cover;
 }
 
-/* INFO */
+
 .book-info {
   padding: 10px;
 }
@@ -229,5 +227,36 @@ body {
   font-size: 13px;
   color: #555;
   margin-bottom: 8px;
+}
+
+
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f9fafb;
+}
+
+.login-card {
+  width: 380px;
+  padding: 32px;
+  border-radius: 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.login-card h4 {
+  margin-bottom: 8px;
+}
+
+.login-card input {
+  margin-top: 12px;
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 24px;
 }
 

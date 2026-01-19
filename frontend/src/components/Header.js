@@ -1,23 +1,40 @@
-const Header = ({ page, setPage }) => {
+import { useNavigate, useLocation } from "react-router-dom";
+
+const Header = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const currentPath = location.pathname;
+
     return (
         <header className="app-header">
-            <div className="header-left">
-                <h5>Perpustakaan Kampus</h5>
-            </div>
+            <h5>Perpustakaan Kampus</h5>
 
-            <div className="header-right">
+            <div>
                 <button
-                    className={`btn-flat ${page === "dashboard" ? "active" : ""}`}
-                    onClick={() => setPage("dashboard")}
+                    className={`btn-flat ${currentPath === "/dashboard" ? "active" : ""
+                        }`}
+                    onClick={() => navigate("/dashboard")}
                 >
                     Dashboard
                 </button>
 
                 <button
-                    className={`btn-flat ${page === "admin" ? "active" : ""}`}
-                    onClick={() => setPage("admin")}
+                    className={`btn-flat ${currentPath === "/admin" ? "active" : ""
+                        }`}
+                    onClick={() => navigate("/admin")}
                 >
                     Admin
+                </button>
+
+                <button
+                    className="btn-flat red-text"
+                    onClick={() => {
+                        localStorage.clear();
+                        navigate("/login");
+                    }}
+                >
+                    Logout
                 </button>
             </div>
         </header>
