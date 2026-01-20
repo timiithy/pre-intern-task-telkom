@@ -14,7 +14,7 @@ import (
 func main() {
 	// Connect & migrate DB
 	config.ConnectDB()
-	config.MigrateDB()
+	//config.MigrateDB()
 
 	// Initialize Echo
 	e := echo.New()
