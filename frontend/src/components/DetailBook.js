@@ -7,7 +7,7 @@ const DetailBook = ({ bookId, onClose }) => {
   useEffect(() => {
     if (!bookId) return;
 
-    api.get(`/buku/${bookId}`)
+    api.get(`/showcase/buku/${bookId}`)
       .then(res => setBook(res.data))
       .catch(console.error);
   }, [bookId]);

@@ -9,7 +9,7 @@ const UserDashboard = () => {
 
   const fetchBooks = async () => {
     try {
-      const res = await api.get("/buku");
+      const res = await api.get("/showcase/buku");
       setBooks(res.data);
     } catch (err) {
       console.error(err);
