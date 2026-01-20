@@ -333,4 +333,15 @@ body {
   line-height: 1.6;
 }
 
+.login-error {
+  margin-top: 8px;
+  color: #e53935;
+  font-size: 0.9rem;
+}
+
+.input-error {
+  border-bottom: 2px solid #e53935 !important;
+  box-shadow: none !important;
+}
+
 
