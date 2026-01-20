@@ -28,7 +28,8 @@ const DetailBook = ({ bookId, onClose }) => {
 
           <div className="detail-info">
             <h5>{book.nama_buku}</h5>
-            <p className="author">✍ {book.author_buku}</p>
+            <p className="author">{book.author_buku}</p>
+            <p className="isbn">ISBN: {book.isbn || "-"}</p>
             <p className="stock">Stok: {book.stok}</p>
             <p className="desc">{book.deskripsi_buku}</p>
           </div>
