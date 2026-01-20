@@ -6,8 +6,15 @@ const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+
 
     const handleLogin = async () => {
+        setError("");
+        setLoading(true);
+
         try {
             const res = await api.post("/auth/login", {
                 email,
@@ -31,9 +38,17 @@ const Login = () => {
             }
         } catch (err) {
             console.error(err);
-            alert("Login gagal");
+
+            const message =
+                err?.response?.data?.message ||
+                "Email atau password salah";
+
+            setError(message);
+        } finally {
+            setLoading(false);
         }
     };
+
 
     return (
         <div className="login-page">
@@ -41,21 +56,40 @@ const Login = () => {
                 <h4 className="center-align">Login</h4>
 
                 <input
+                    type="text"
                     placeholder="Email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    className={error ? "input-error" : ""}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        setError("");
+                    }}
                 />
 
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    className={error ? "input-error" : ""}
+                    onChange={(e) => {
+                        setPassword(e.target.value);
+                        setError("");
+                    }}
                 />
+                {error && (
+                    <p className="login-error">
+                        {error}
+                    </p>
+                )}
 
-                <button className="btn blue full-width" onClick={handleLogin}>
-                    Login
+                <button
+                    className="btn blue full-width"
+                    onClick={handleLogin}
+                    disabled={loading}
+                >
+                    {loading ? "Logging in..." : "Login"}
                 </button>
+
             </div>
         </div>
     );

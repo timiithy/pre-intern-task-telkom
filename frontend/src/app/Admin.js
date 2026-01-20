@@ -15,22 +15,38 @@ const Admin = () => {
   const [books, setBooks] = useState([]);
   const [borrows, setBorrows] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  
+
   const fetchUsers = async () => {
-    const res = await api.get("/pengguna");
-    setUsers(res.data);
+    try {
+      const res = await api.get("/users");
+      setUsers(res.data);
+    } catch (err) {
+      console.error("Fetch users failed", err);
+      setUsers([]); // fallback
+    }
   };
 
+
   const fetchBooks = async () => {
-    const res = await api.get("/buku");
-    setBooks(res.data);
+    try {
+      const res = await api.get("/buku");
+      setBooks(res.data);
+    } catch (err) {
+      console.error("Fetch books failed", err);
+      setBooks([]); // fallback
+    }
   };
 
   const fetchBorrows = async () => {
-    const res = await api.get("/peminjaman");
-    setBorrows(res.data);
+    try {
+      const res = await api.get("/peminjaman");
+      setBorrows(res.data);
+    } catch (err) {
+      console.error("Fetch borrows failed", err);
+      setBorrows([]); // fallback
+    }
   }
-  ;
+    ;
   const getActionConfig = () => {
     switch (activeTab) {
       case "user":
@@ -56,12 +72,12 @@ const Admin = () => {
     }
   };
 
-        const action = getActionConfig();
-        useEffect(() => {
-        fetchUsers();
-        fetchBooks();
-        fetchBorrows();
-        }, []);
+  const action = getActionConfig();
+  useEffect(() => {
+    fetchUsers();
+    fetchBooks();
+    fetchBorrows();
+  }, []);
 
   useEffect(() => {
     fetchUsers();
@@ -87,35 +103,35 @@ const Admin = () => {
         )}
         {action.label && (
           <button
-          className="btn green"
-          style={{ marginTop: "15px" }}
-          onClick={() => setShowModal(true)}
-  >
+            className="btn green"
+            style={{ marginTop: "15px" }}
+            onClick={() => setShowModal(true)}
+          >
             {action.label}
-            </button>
+          </button>
         )}
 
 
-      {showModal && action.modal === "user" && (
-      <UserFormModal
-      onClose={() => setShowModal(false)}
-      onSuccess={action.refresh}
-      />
-      )}
+        {showModal && action.modal === "user" && (
+          <UserFormModal
+            onClose={() => setShowModal(false)}
+            onSuccess={action.refresh}
+          />
+        )}
 
-      {showModal && action.modal === "book" && (
-      <BookFormModal
-      onClose={() => setShowModal(false)}
-      onSuccess={action.refresh}
-      />
-      )}
+        {showModal && action.modal === "book" && (
+          <BookFormModal
+            onClose={() => setShowModal(false)}
+            onSuccess={action.refresh}
+          />
+        )}
 
-      {showModal && action.modal === "borrow" && (
-      <BorrowFormModal
-      onClose={() => setShowModal(false)}
-      onSuccess={action.refresh}
-      />
-      )}
+        {showModal && action.modal === "borrow" && (
+          <BorrowFormModal
+            onClose={() => setShowModal(false)}
+            onSuccess={action.refresh}
+          />
+        )}
 
       </div>
     </div>
