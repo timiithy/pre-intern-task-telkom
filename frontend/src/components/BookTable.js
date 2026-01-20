@@ -19,14 +19,18 @@ const BookTable = ({ data, refresh }) => {
         {data.map((buku) => (
           <div className="book-card" key={buku.id_buku}>
             <img
-              src={buku.gambar}
+              src={buku.cover_url}
               alt={buku.nama_buku}
               className="book-image"
             />
 
+
             <div className="book-info">
               <p className="book-title">{buku.nama_buku}</p>
               <p className="book-stock">Stok: {buku.stok}</p>
+              <p className="book-author">Author: {buku.author_buku || "-"}</p>
+              <p className="book-isbn">ISBN: {buku.isbn || "-"}</p>
+
 
               <button
                 className="btn-small red"

@@ -4,20 +4,21 @@ import api from "../services/api";
 const BookFormModal = ({ onClose, onSuccess }) => {
     const [judul, setJudul] = useState("");
     const [stok, setStok] = useState("");
-    const [gambar, setGambar] = useState(null); // 🆕 state file
-
+    const [coverUrl, setCoverUrl] = useState("");
+    const [author, setAuthor] = useState("");
+    const [isbn, setIsbn] = useState("");
+    const [deskripsi, setDeskripsi] = useState("");
     const handleSubmit = async () => {
         try {
-            const formData = new FormData();
-            formData.append("nama_buku", judul);
-            formData.append("stok", Number(stok));
-            formData.append("gambar", gambar); // 🆕 kirim file
-
-            await api.post("/buku", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+            await api.post("/buku", {
+                nama_buku: judul,
+                stok: Number(stok),
+                cover_url: coverUrl,
+                author_buku: author,
+                isbn,
+                deskripsi_buku: deskripsi,
             });
+
 
             onSuccess();
             onClose();
@@ -45,12 +46,30 @@ const BookFormModal = ({ onClose, onSuccess }) => {
                     onChange={(e) => setStok(e.target.value)}
                 />
 
-                {/* 🆕 input upload gambar */}
                 <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setGambar(e.target.files[0])}
+                    placeholder="Author"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
                 />
+
+                <input
+                    placeholder="ISBN"
+                    value={isbn}
+                    onChange={(e) => setIsbn(e.target.value)}
+                />
+
+                <input
+                    placeholder="Cover URL"
+                    value={coverUrl}
+                    onChange={(e) => setCoverUrl(e.target.value)}
+                />
+
+                <textarea
+                    placeholder="Deskripsi Buku"
+                    value={deskripsi}
+                    onChange={(e) => setDeskripsi(e.target.value)}
+                />
+
 
                 <div style={{ marginTop: "16px" }}>
                     <button className="btn blue" onClick={handleSubmit}>
