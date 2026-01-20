@@ -18,7 +18,7 @@ const Admin = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await api.get("/users");
+      const res = await api.get("/pengguna");
       setUsers(res.data);
     } catch (err) {
       console.error("Fetch users failed", err);
