@@ -1,4 +1,4 @@
-const TopUserTable = ({ data = [] }) => {
+const TopUserTable = ({ data }) => {
   return (
     <div className="card-outline">
       <h6>Top 10 User Paling Aktif</h6>

@@ -1,4 +1,4 @@
-const TopBookTable = ({ data = [] }) => {
+const TopBookTable = ({ data }) => {
   return (
     <div className="card-outline">
       <h6>Top 10 Buku Terfavorit</h6>
