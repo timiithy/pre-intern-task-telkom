@@ -41,10 +41,9 @@ const RecentBorrowTable = ({ data = [] }) => {
                                     <td>{item.durasi}</td>
                                     <td>
                                         <span
-                                            className={`status-badge ${item.returned_at ? "done" : "active"
-                                                }`}
+                                            className={`status-badge ${item.status === "selesai" ? "done" : "active"}`}
                                         >
-                                            {item.returned_at ? "Dikembalikan" : "Dipinjam"}
+                                            {item.status === "selesai" ? "Selesai" : "Dipinjam"}
                                         </span>
                                     </td>
                                 </tr>
