@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import StatCard from "../components/StatCard";
-import RecentBorrowTable from "../components/RecentBorrowTable";
-import TopUserTable from "../components/TopUserTable";
-import TopBookTable from "../components/TopBookTable";
+import { StatCard } from "../components/Common";
+import { RecentBorrowTable } from "../components/Borrow";
+import { TopUserTable, TopBookTable } from "../components/Table";
 import api from "../services/api";
 
 const Dashboard = () => {
@@ -38,12 +37,12 @@ const Dashboard = () => {
 
   }, []);
 
- useEffect(() => {
-  	const role = localStorage.getItem("role");
-  	if (role !== "admin") {
-    	window.location.href = "/";
-  	}
-	}, []);
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "admin") {
+      window.location.href = "/";
+    }
+  }, []);
 
 
   return (

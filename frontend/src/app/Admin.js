@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
-import Tabs from "../components/Tabs";
-import UserTable from "../components/UserTable";
-import BookTable from "../components/BookTable";
-import BorrowTable from "../components/BorrowTable";
-import BorrowFormModal from "../components/BorrowFormModal";
-import BookFormModal from "../components/BookFormModal";
-import UserFormModal from "../components/UserFormModal";
+import { Tabs } from "../components/Common";
+import { BookTable, BookFormModal } from "../components/Book";
+import { BorrowTable, BorrowFormModal } from "../components/Borrow";
+import { UserTable, UserFormModal } from "../components/User";
 import api from "../services/api";
 
 

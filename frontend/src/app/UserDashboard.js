@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import BookTableUser from "../components/BookTableUser";
-import DetailBook from "../components/DetailBook";
 import api from "../services/api";
+import { BookTableUser } from "../components/Table";
+import { DetailPanel } from "../components/Navigation";
+import { NavigationSidebar } from "../components/Navigation";
 
 const UserDashboard = () => {
   const [books, setBooks] = useState([]);
-  const [selectedBookId, setSelectedBookId] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null);
 
   const fetchBooks = async () => {
     try {
@@ -19,32 +20,39 @@ const UserDashboard = () => {
   useEffect(() => {
     fetchBooks();
   }, []);
+
   useEffect(() => {
     const role = localStorage.getItem("role");
     if (role === "admin") {
-    window.location.href = "/dashboard";
+      window.location.href = "/dashboard";
     }
-	}, []);
-
+  }, []);
 
   return (
-    <div className="container" style={{ marginTop: "40px" }}>
-      <h4 className="center-align">Dashboard Perpustakaan</h4>
+    <div className="user-dashboard-layout">
+      {/* Left Sidebar - Navigation */}
+      <NavigationSidebar />
 
-      <div style={{ marginTop: "32px" }}>
-        <BookTableUser
-          data={books}
-          refresh={fetchBooks}
-          onSelectBook={(buku) => setSelectedBookId(buku.id_buku)}
-        />
+      {/* Main Content */}
+      <div className="user-dashboard">
+        <div className="dashboard-header">
+          <h2>Halo Pengguna</h2>
+        </div>
+
+        <div className="dashboard-container">
+          {/* Left - Book List */}
+          <div className="books-section">
+            <BookTableUser
+              data={books}
+              refresh={fetchBooks}
+              onSelectBook={setSelectedBook}
+            />
+          </div>
+
+          {/* Right - Detail Panel */}
+          <DetailPanel selectedBook={selectedBook} />
+        </div>
       </div>
-
-      {selectedBookId && (
-        <DetailBook
-          bookId={selectedBookId}
-          onClose={() => setSelectedBookId(null)}
-        />
-      )}
     </div>
   );
 };

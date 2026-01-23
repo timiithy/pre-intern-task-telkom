@@ -1,6 +1,6 @@
 import M from "materialize-css";
 import { useEffect, useState } from "react";
-import api from "../services/api";
+import api from "../../services/api";
 
 const BorrowFormModal = ({ onClose, onSuccess }) => {
   const [users, setUsers] = useState([]);

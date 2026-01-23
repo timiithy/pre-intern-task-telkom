@@ -1,33 +1,21 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./app/Login";
-import Dashboard from "./app/Dashboard";
 import UserDashboard from "./app/UserDashboard";
 import Admin from "./app/Admin";
-import Header from "./components/Header";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { Header, ProtectedRoute } from "./components/Common";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* DEFAULT */}
-        <Route path="/" element={<Navigate to="/login" />} />
+        {/* DEFAULT - Landing di User Dashboard */}
+        <Route path="/" element={<UserDashboard />} />
 
         {/* LOGIN */}
         <Route path="/login" element={<Login />} />
 
-        {/* ADMIN DASHBOARD */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <>
-                <Header />
-                <Dashboard />
-              </>
-            </ProtectedRoute>
-          }
-        />
+        {/* USER DASHBOARD - Public Access */}
+        <Route path="/dashboard-user" element={<UserDashboard />} />
 
         {/* USER DASHBOARD */}
         <Route
