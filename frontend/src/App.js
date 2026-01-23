@@ -5,18 +5,25 @@ import Admin from "./app/Admin";
 import Dashboard from "./app/Dashboard";
 import { Header, ProtectedRoute } from "./components/Common";
 
+const RootRedirect = () => {
+  const role = localStorage.getItem("role");
+
+  if (role === "admin") {
+    return <Navigate to="/dashboard" />;
+  }
+
+  return <UserDashboard />;
+};
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* DEFAULT - Landing di User Dashboard */}
-        <Route path="/" element={<UserDashboard />} />
+        {/* DEFAULT - Redirect based on role or to login */}
+        <Route path="/" element={<RootRedirect />} />
 
         {/* LOGIN */}
         <Route path="/login" element={<Login />} />
-
-        {/* USER DASHBOARD - Public Access */}
-        <Route path="/dashboard-user" element={<UserDashboard />} />
 
         {/* USER DASHBOARD */}
         <Route
