@@ -14,9 +14,6 @@ function App() {
         {/* LOGIN */}
         <Route path="/login" element={<Login />} />
 
-        {/* USER DASHBOARD - Public Access */}
-        <Route path="/dashboard-user" element={<UserDashboard />} />
-
         {/* USER DASHBOARD */}
         <Route
           path="/dashboard-user"
@@ -30,9 +27,9 @@ function App() {
           }
         />
 
-        {/* ADMIN PAGE */}
+        {/* ADMIN DASHBOARD */}
         <Route
-          path="/admin"
+          path="/dashboard"
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
               <>
