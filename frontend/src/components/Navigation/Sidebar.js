@@ -1,3 +1,4 @@
+import { iconDetailpanel } from "../Icons";
 const DetailPanel = ({ selectedBook }) => {
     return (
         <div className="detail-section">
@@ -18,7 +19,7 @@ const DetailPanel = ({ selectedBook }) => {
                 </div>
             ) : (
                 <div className="no-selection">
-                    <img src="https://yosa.s-ul.eu/XPtzOP8m" alt="Book Icon" style={{opacity: 1}} />
+                    <img src={iconDetailpanel} alt="Book Icon" style={{opacity: 1}} />
                     <p>Klik buku untuk melihat detail buku</p>
                 </div>
             )}

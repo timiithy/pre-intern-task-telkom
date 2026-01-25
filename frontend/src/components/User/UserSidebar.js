@@ -19,9 +19,6 @@ const UserSidebar = () => {
 
   return (
     <aside className="user-sidebar">
-      <div className="sidebar-top">
-        <div className="logo">📚</div>
-      </div>
 
       <nav className="sidebar-menu">
         {menu.map((item) => (
