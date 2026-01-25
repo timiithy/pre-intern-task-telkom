@@ -31,7 +31,7 @@ const Header = () => {
                     className="btn-flat red-text"
                     onClick={() => {
                         localStorage.clear();
-                        navigate("/dashboard-user");
+                        navigate("/");
                     }}
                 >
                     Logout
