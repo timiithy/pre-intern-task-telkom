@@ -50,12 +50,11 @@ const Sidebar = () => {
                 </div>
             </nav>
 
-            <button className="nav-item logout-btn" onMouseEnter={() => setHoveredItem('logout')} onMouseLeave={() => setHoveredItem(null)} onClick={handleLogout}>
-                <img src={hoveredItem === 'logout' ? iconLogoutSelected : iconLogout} alt="Logout" className="nav-icon icon-hover" />
-                <span className="nav-label">Logout</span>
-            </button>
-
             <div className="sidebar-footer">
+                <button className="logout-btn" onMouseEnter={() => setHoveredItem('logout')} onMouseLeave={() => setHoveredItem(null)} onClick={handleLogout}>
+                    <img src={hoveredItem === 'logout' ? iconLogoutSelected : iconLogout} alt="Logout" className="nav-icon icon-hover" />
+                    <span className="logout-label">Logout</span>
+                </button>
                 <button className="admin-link" onClick={handleAdminClick}>
                     Saya Admin
                 </button>
