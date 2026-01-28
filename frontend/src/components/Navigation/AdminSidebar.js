@@ -7,6 +7,7 @@ import {
   iconLogoutSelected,
   iconLogo,
 } from "../Icons";
+import Dashboard from "../../app/Dashboard";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ const AdminSidebar = () => {
                 : iconFitur
             }
             className="nav-icon"
+            alt="Dashboard"
           />
           <span className="nav-label">Dashboard</span>
         </div>
@@ -63,6 +65,7 @@ const AdminSidebar = () => {
                 : iconFitur
             }
             className="nav-icon"
+            alt="members"
           />
           <span className="nav-label">Members</span>
         </div>
@@ -81,6 +84,7 @@ const AdminSidebar = () => {
                 : iconFitur
             }
             className="nav-icon"
+            alt="addbook"
           />
           <span className="nav-label">Daftar Buku</span>
         </div>
@@ -101,6 +105,7 @@ const AdminSidebar = () => {
                 : iconFitur
             }
             className="nav-icon"
+            alt="borrowbook"
           />
           <span className="nav-label">Peminjaman Buku</span>
         </div>
@@ -119,6 +124,7 @@ const AdminSidebar = () => {
               hoveredItem === "logout" ? iconLogoutSelected : iconLogout
             }
             className="nav-icon"
+            alt="nav-icon"
           />
           <span className="logout-label">Logout</span>
         </button>
