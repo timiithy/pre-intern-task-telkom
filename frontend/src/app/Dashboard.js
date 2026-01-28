@@ -3,6 +3,7 @@ import { StatCard } from "../components/Common";
 import { RecentBorrowTable } from "../components/Borrow";
 import { TopUserTable, TopBookTable } from "../components/Table";
 import api from "../services/api";
+import { AdminSidebar} from "../components/Navigation"
 
 const Dashboard = () => {
   const [stats, setStats] = useState([]);
@@ -46,8 +47,14 @@ const Dashboard = () => {
 
 
   return (
-    <div className="container" style={{ marginTop: "40px" }}>
-      <h4 className="center-align">Dashboard Admin Perpustakaan</h4>
+    <div className="user-dashboard-layout">
+          {/* Left Sidebar - Navigation */}
+          <AdminSidebar />
+      {/* Main Content */}
+      <div className="user-dashboard">
+        <div className="dashboard-header">
+          <h2>Halo admin</h2>
+        </div>
 
       {/* STAT CARDS */}
       <div className="dashboard-cards" style={{ marginTop: "32px" }}>
@@ -69,7 +76,7 @@ const Dashboard = () => {
         <h5 className="center-align">Recent Peminjaman</h5>
         <RecentBorrowTable data={recentBorrows} />
       </div>
-
+      </div>
     </div>
   );
 };
