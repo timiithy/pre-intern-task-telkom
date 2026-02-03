@@ -1,4 +1,4 @@
-export { default as Members } from './Member';
-export { default as AddBook } from './Book';
+export { default as Members } from './Members';
+export { default as AddBook } from './AddBook';
 export { default as Dashboard } from './Dashboard';
-export { default as BorrowBook } from './Borrow';
+export { default as BorrowBook } from './BorrowBook';

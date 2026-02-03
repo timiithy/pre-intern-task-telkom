@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AdminLayout from "../../app/AdminLayout";
 import Dashboard from "./Dashboard";
-import Members from "./Member";
-import AddBook from "./Book";
-import BorrowBook from "./Borrow";
+import Members from "./Members";
+import AddBook from "./AddBook";
+import BorrowBook from "./BorrowBook";
 
 const App = () => {
   const role = localStorage.getItem("role");
