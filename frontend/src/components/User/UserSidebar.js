@@ -5,7 +5,7 @@ const UserSidebar = () => {
   const location = useLocation();
 
   const menu = [
-    { label: "Jelajah", path: "/dashboard" },
+    { label: "Jelajah", path: "/dashboard-user" },
     { label: "Fitur 2", path: "#" },
     { label: "Fitur 3", path: "#" },
     { label: "Fitur 4", path: "#" },
