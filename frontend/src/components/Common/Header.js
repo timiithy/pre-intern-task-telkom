@@ -1,7 +1,7 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { /*useNavigate*/ useLocation } from "react-router-dom";
 
 const Header = () => {
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const location = useLocation();
 
     const currentPath = location.pathname;
@@ -14,7 +14,7 @@ const Header = () => {
                 <button
                     className={`btn-flat ${currentPath === "/dashboard" ? "active" : ""
                         }`}
-                    onClick={() => navigate("/dashboard")}
+                    //onClick={() => navigate("/dashboard")}
                 >
                     Dashboard
                 </button>
@@ -22,7 +22,7 @@ const Header = () => {
                 <button
                     className={`btn-flat ${currentPath === "/admin" ? "active" : ""
                         }`}
-                    onClick={() => navigate("/admin")}
+                    //onClick={() => navigate("/admin")}
                 >
                     Admin
                 </button>
@@ -31,7 +31,7 @@ const Header = () => {
                     className="btn-flat red-text"
                     onClick={() => {
                         localStorage.clear();
-                        navigate("/");
+                        //navigate("/");
                     }}
                 >
                     Logout

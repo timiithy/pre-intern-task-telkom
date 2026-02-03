@@ -295,15 +295,16 @@ nav {
 /* User Dashboard */
 .admin-dashboard-layout {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f5f5f5;
   overflow-y: auto;
 }
 
 .user-dashboard-layout {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f5f5f5;
+  overflow-y: auto;
 }
 
 .user-dashboard {

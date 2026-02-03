@@ -2,62 +2,66 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./app/Login";
 import UserDashboard from "./app/UserDashboard";
 import Admin from "./app/Admin";
-import Dashboard from "./app/Dashboard";
+import AdminLayout from "./app/AdminLayout";
+import { Header, ProtectedRoute } from "./components/Common";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* DEFAULT → DASHBOARD ADMIN */}
-        <Route
-          path="/"
-          element={
-            <>
-              <Dashboard />
-            </>
-          }
-        />
+        {/* DEFAULT - User Dashboard */}
+        <Route path="/" element={<UserDashboard />} />
 
         {/* LOGIN */}
         <Route path="/login" element={<Login />} />
+
+        {/* USER DASHBOARD - Public Access */}
+        <Route path="/dashboard-user" element={<UserDashboard />} />
 
         {/* USER DASHBOARD */}
         <Route
           path="/dashboard-user"
           element={
-            <>
-              <UserDashboard />
-            </>
+            <ProtectedRoute allowedRoles={["user"]}>
+              <>
+                <Header />
+                <UserDashboard />
+              </>
+            </ProtectedRoute>
           }
         />
 
-        {/* ADMIN PAGE */}
+        {/* ADMIN DASHBOARD */}
         <Route
           path="/admin"
           element={
-            <>
-              <Admin />
-            </>
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <>
+                <Header />
+                <Admin />
+              </>
+            </ProtectedRoute>
           }
         />
 
         {/* DASHBOARD */}
         <Route
-          path="/dashboard"
+          path="/adminlayout"
           element={
-            <>
-              <Dashboard />
-            </>
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <>
+                <Header />
+                <AdminLayout />
+              </>
+            </ProtectedRoute>
           }
         />
 
         {/* FALLBACK */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-
+        <Route path="*" element={<Navigate to="/user-dashboard" />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
-export default App
+export default App;
