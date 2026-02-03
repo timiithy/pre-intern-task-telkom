@@ -336,6 +336,7 @@ nav {
 
 /* Sidebar */
 .sidebar {
+  display: absolute;
   width: 200px;
   height: 100vh;
   overflow: hidden;
