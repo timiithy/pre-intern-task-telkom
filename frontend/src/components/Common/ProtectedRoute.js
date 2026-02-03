@@ -1,20 +1,29 @@
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role") || "user";
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role"); 
 
-    if (!token) {
-        return <Navigate to="/login" replace />;
+  // belum login
+  if (!token || !role) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // role tidak diizinkan
+  if (allowedRoles?.length && !allowedRoles.includes(role)) {
+    // redirect sesuai role
+    if (role === "admin") {
+      return <Navigate to="/admin/dashboard" replace />;
     }
 
-    if (Array.isArray(allowedRoles) && allowedRoles.length > 0) {
-        if (!allowedRoles.includes(role)) {
-            return <Navigate to="/login" replace />;
-        }
+    if (role === "user") {
+      return <Navigate to="/dashboard-user" replace />;
     }
 
-    return children;
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 };
 
 export default ProtectedRoute;
