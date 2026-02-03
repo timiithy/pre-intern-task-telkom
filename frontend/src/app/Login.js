@@ -12,41 +12,34 @@ const Login = () => {
 
 
     const handleLogin = async () => {
-        setError("");
-        setLoading(true);
+    setError("");
+    setLoading(true);
 
-        try {
-            const res = await api.post("/auth/login", {
-                email,
-                password,
-            });
+    try {
+        const res = await api.post("/auth/login", { email, password });
 
-            const token = res?.data?.access_token;
-            const role = res?.data?.user?.app_metadata?.role || "user";
+        const token = res?.data?.access_token;
+        const role = res?.data?.user?.app_metadata?.role;
 
-            if (!token) {
-                throw new Error("Token tidak ditemukan");
-            }
-
-            localStorage.setItem("token", token);
-            localStorage.setItem("role", role);
-
-            if (role === "admin") {
-                navigate("/admin");
-            } else {
-                navigate("/dashboard-user");
-            }
-        } catch (err) {
-            console.error(err);
-
-            const message =
-                err?.response?.data?.message ||
-                "Email atau password salah";
-
-            setError(message);
-        } finally {
-            setLoading(false);
+        if (!token || !role) {
+            throw new Error("Token atau role tidak ditemukan");
         }
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", role);
+
+        if (role === "admin") {
+            navigate("/admin/dashboard", { replace: true });
+        } else {
+            navigate("/dashboard-user", { replace: true });
+        }
+    } catch (err) {
+        setError(
+            err?.response?.data?.message || "Email atau password salah"
+        );
+    } finally {
+        setLoading(false);
+    }
     };
 
 
