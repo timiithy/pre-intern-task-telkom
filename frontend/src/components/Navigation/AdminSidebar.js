@@ -7,7 +7,6 @@ import {
   iconLogoutSelected,
   iconLogo,
 } from "../Icons";
-import Dashboard from "../../app/Dashboard";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
