@@ -39,7 +39,7 @@ function App() {
         </Route>
 
         {/* DEFAULT */}
-        <Route path="/" element={<Navigate to="/dashboard-user" />} />
+        <Route path="/" element={<Navigate to="/login " />} />
 
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/" replace />} />
