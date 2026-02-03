@@ -15,10 +15,10 @@ const AdminSidebar = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname.startsWith(path);
 
   return (
     <div className="sidebar">
@@ -33,14 +33,14 @@ const AdminSidebar = () => {
       <nav className="sidebar-nav">
         {/* Dashboard */}
         <div
-          className={`nav-item ${isActive("/dashboard") ? "active" : ""}`}
-          onMouseEnter={() => !isActive("/dashboard") && setHoveredItem("dashboard")}
+          className={`nav-item ${isActive("/admin/dashboard") ? "active" : ""}`}
+          onMouseEnter={() => !isActive("/admin/dashboard") && setHoveredItem("dashboard")}
           onMouseLeave={() => setHoveredItem(null)}
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/admin/dashboard")}
         >
           <img
             src={
-              isActive("/dashboard") || hoveredItem === "dashboard"
+              isActive("/admin/dashboard") || hoveredItem === "dashboard"
                 ? iconFiturSelected
                 : iconFitur
             }
@@ -52,14 +52,14 @@ const AdminSidebar = () => {
 
         {/* Members */}
         <div
-          className={`nav-item ${isActive("/members") ? "active" : ""}`}
-          onMouseEnter={() => !isActive("/members") && setHoveredItem("members")}
+          className={`nav-item ${isActive("/admin/members") ? "active" : ""}`}
+          onMouseEnter={() => !isActive("/admin/members") && setHoveredItem("members")}
           onMouseLeave={() => setHoveredItem(null)}
-          onClick={() => navigate("/members")}
+          onClick={() => navigate("/admin/members")}
         >
           <img
             src={
-              isActive("/members") || hoveredItem === "members"
+              isActive("/admin/members") || hoveredItem === "members"
                 ? iconFiturSelected
                 : iconFitur
             }
@@ -71,14 +71,14 @@ const AdminSidebar = () => {
 
         {/* Daftar Buku */}
         <div
-          className={`nav-item ${isActive("/addBook") ? "active" : ""}`}
-          onMouseEnter={() => !isActive("/addBook") && setHoveredItem("addBook")}
+          className={`nav-item ${isActive("/admin/addBook") ? "active" : ""}`}
+          onMouseEnter={() => !isActive("/admin/addBook") && setHoveredItem("addBook")}
           onMouseLeave={() => setHoveredItem(null)}
-          onClick={() => navigate("/addBook")}
+          onClick={() => navigate("/admin/addBook")}
         >
           <img
             src={
-              isActive("/addBook") || hoveredItem === "addBook"
+              isActive("/admin/addBook") || hoveredItem === "addBook"
                 ? iconFiturSelected
                 : iconFitur
             }
@@ -90,16 +90,16 @@ const AdminSidebar = () => {
 
         {/* Peminjaman */}
         <div
-          className={`nav-item ${isActive("/borrowBook") ? "active" : ""}`}
+          className={`nav-item ${isActive("/admin/borrowBook") ? "active" : ""}`}
           onMouseEnter={() =>
-            !isActive("/borrowBook") && setHoveredItem("borrowBook")
+            !isActive("/admin/borrowBook") && setHoveredItem("borrowBook")
           }
           onMouseLeave={() => setHoveredItem(null)}
-          onClick={() => navigate("/borrowBook")}
+          onClick={() => navigate("/admin/borrowBook")}
         >
           <img
             src={
-              isActive("/borrowBook") || hoveredItem === "borrowBook"
+              isActive("/admin/borrowBook") || hoveredItem === "borrowBook"
                 ? iconFiturSelected
                 : iconFitur
             }
@@ -110,7 +110,7 @@ const AdminSidebar = () => {
         </div>
       </nav>
 
-      {/* FOOTER (SAMA PERSIS STRUKTURNYA) */}
+      {/* FOOTER */}
       <div className="sidebar-footer">
         <button
           className="logout-btn"
@@ -119,9 +119,7 @@ const AdminSidebar = () => {
           onClick={handleLogout}
         >
           <img
-            src={
-              hoveredItem === "logout" ? iconLogoutSelected : iconLogout
-            }
+            src={hoveredItem === "logout" ? iconLogoutSelected : iconLogout}
             className="nav-icon"
             alt="nav-icon"
           />
