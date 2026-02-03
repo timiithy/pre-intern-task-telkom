@@ -32,7 +32,7 @@ const Login = () => {
             localStorage.setItem("role", role);
 
             if (role === "admin") {
-                navigate("/dashboard");
+                navigate("/adminlayout");
             } else {
                 navigate("/dashboard-user");
             }
