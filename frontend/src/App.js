@@ -58,7 +58,7 @@ function App() {
         />
 
         {/* FALLBACK */}
-        <Route path="*" element={<Navigate to="/user-dashboard" />} />
+        <Route path="*" element={<Navigate to="/dashboard-user" />} />
       </Routes>
     </BrowserRouter>
   );
