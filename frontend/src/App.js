@@ -41,12 +41,9 @@ function App() {
           {/* nanti tambah members, addBook, borrowBook di sini */}
         </Route>
 
-<<<<<<< HEAD
         {/* DEFAULT */}
         <Route path="/" element={<Navigate to="/login " />} />
 
-=======
->>>>>>> a9b83efce63e6c31dae3f7e34d774901c30e38ba
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
