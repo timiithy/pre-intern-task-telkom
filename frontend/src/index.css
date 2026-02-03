@@ -135,11 +135,10 @@ nav {
 
 /* Dashboard Layout */
 .dashboard-cards {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
-  flex-wrap: wrap;
-  margin-top: 32px;
+  width: 100%;
 }
 
 .dashboard-grid-2 {
