@@ -9,6 +9,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* DEFAULT */}
+        <Route path="/" element={<Navigate to="/dashboard-user" />} />
         {/* LOGIN */}
         <Route path="/login" element={<Login />} />
 
@@ -37,9 +40,6 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           {/* nanti tambah members, addBook, borrowBook di sini */}
         </Route>
-
-        {/* DEFAULT */}
-        <Route path="/" element={<Navigate to="/dashboard-user" />} />
 
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/" replace />} />
