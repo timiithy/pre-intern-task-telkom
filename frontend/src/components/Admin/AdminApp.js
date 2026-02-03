@@ -5,7 +5,7 @@ import Members from "./Members";
 import AddBook from "./AddBook";
 import BorrowBook from "./BorrowBook";
 
-const App = () => {
+const AdminApp = () => {
   const role = localStorage.getItem("role");
 
   return (
@@ -25,4 +25,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default AdminApp;
