@@ -1,24 +1,18 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./app/Login";
 import UserDashboard from "./app/UserDashboard";
-import Admin from "./app/Admin";
 import AdminLayout from "./app/AdminLayout";
+import Dashboard from "./app/Dashboard";
 import { Header, ProtectedRoute } from "./components/Common";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* DEFAULT - User Dashboard */}
-        <Route path="/" element={<UserDashboard />} />
-
         {/* LOGIN */}
         <Route path="/login" element={<Login />} />
 
-        {/* USER DASHBOARD - Public Access */}
-        <Route path="/dashboard-user" element={<UserDashboard />} />
-
-        {/* USER DASHBOARD */}
+        {/* USER */}
         <Route
           path="/dashboard-user"
           element={
@@ -31,31 +25,21 @@ function App() {
           }
         />
 
-        {/* ADMIN DASHBOARD */}
+        {/* ADMIN (LAYOUT + OUTLET) */}
         <Route
           path="/admin"
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
-              <>
-                <Header />
-                <Admin />
-              </>
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          {/* nanti tambah members, addBook, borrowBook di sini */}
+        </Route>
 
-        {/* DASHBOARD */}
-        <Route
-          path="/adminlayout"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <>
-                <Header />
-                <AdminLayout />
-              </>
-            </ProtectedRoute>
-          }
-        />
+        {/* DEFAULT */}
+        <Route path="/" element={<Navigate to="/dashboard-user" />} />
 
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/dashboard-user" />} />

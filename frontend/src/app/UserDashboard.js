@@ -21,13 +21,6 @@ const UserDashboard = () => {
     fetchBooks();
   }, []);
 
-  useEffect(() => {
-    const role = localStorage.getItem("role");
-    if (role === "admin") {
-      window.location.href = "/dashboard";
-    }
-  }, []);
-
   return (
     <div className="user-dashboard-layout">
       {/* Left Sidebar - Navigation */}
