@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./app/Login";
 import UserDashboard from "./app/UserDashboard";
 import AdminLayout from "./app/AdminLayout";
-import Dashboard from "./app/Dashboard";
+import Dashboard from "./components/Admin/Dashboard";
 import { Header, ProtectedRoute } from "./components/Common";
 
 function App() {
